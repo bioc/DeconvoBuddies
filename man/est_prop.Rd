@@ -34,7 +34,7 @@ These are the columns of the \code{data.frame} object:
 summary(rowSums(est_prop) - 1)
 
 ## You can check this yourself with:
-testthat::expect_equal(rowSums(est_prop), rep(1, 100), ignore_attr = TRUE)
+all(round(rowSums(est_prop),3) == 1)
 
 }
 \keyword{datasets}

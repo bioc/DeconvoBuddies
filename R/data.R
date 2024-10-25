@@ -17,7 +17,7 @@
 #' summary(rowSums(est_prop) - 1)
 #'
 #' ## You can check this yourself with:
-#' testthat::expect_equal(rowSums(est_prop), rep(1, 100), ignore_attr = TRUE)
+#' all(round(rowSums(est_prop),3) == 1)
 #'
 #' @format A `data.frame` object.
 #' @source <https://github.com/LieberInstitute/brainstorm/blob/master/data-raw/est_prop.R>
