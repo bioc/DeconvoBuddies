@@ -294,8 +294,11 @@ group of samples. In this example data, the `RNum` is a sample (donor)
 identifier and `Dx` is a group variable for the diagnosis status of the donors.
 
 ```{r `demo plot_composition_bar`}
-# access the colData of a test rse dataset
+# load example data
 data("rse_bulk_test")
+data("est_prop")
+
+# access the colData of a test rse dataset
 pd <- colData(rse_bulk_test) |>
     as.data.frame()
 

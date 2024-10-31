@@ -252,7 +252,7 @@ Key columns in `RNAScope_prop`:
 ```{r "access RNAScope proportions"}
 # Access the RNAScope proportion data.frame
 data("RNAScope_prop")
-head(DeconvoBuddies::RNAScope_prop)
+head(RNAScope_prop)
 
 ## plot the RNAScope compositions
 plot_composition_bar(
