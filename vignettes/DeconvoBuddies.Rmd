@@ -179,7 +179,8 @@ datasets. That is, `get_mean_ratio()` can also work with
 
 ```{r `get_mean_ratio demo`}
 ## find marker genes with get_mean_ratio
-marker_stats <- get_mean_ratio(sce_DLPFC_example,
+marker_stats <- get_mean_ratio(
+    sce_DLPFC_example,
     cellType_col = "cellType_broad_hc",
     gene_name = "gene_name",
     gene_ensembl = "gene_id"
@@ -288,6 +289,7 @@ identifier and `Dx` is a group variable for the diagnosis status of the donors.
 
 ```{r `demo plot_composition_bar`}
 # access the colData of a test rse dataset
+data("rse_bulk_test")
 pd <- colData(rse_bulk_test) |>
     as.data.frame()
 
