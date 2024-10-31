@@ -466,7 +466,7 @@ plot_composition_bar(
 )
 
 ## Each brain donor has up to 6 unique RNA library type and RNA extraction
-## combinations 
+## combinations
 table(prop_long$Sample) / length(unique(prop_long$cell_type))
 
 ## Here are the 6 "SAMPLE_ID" values for brain donor with ID "Br8667_mid"
@@ -546,12 +546,12 @@ if (FALSE) {
     #     remotes::install_url("https://github.com/gjhunt/hspe/raw/main/hspe_0.1.tar.gz")
     #     ## Alternatively, install from the latest version on GitHub with:
     #     # remotes::install_github("gjhunt/hspe", subdir = "lib_hspe")
-    #     
+    #
     #     ## As of 2024-08-23, it's been 3 years since files were last modified
-    #     ## at https://github.com/gjhunt/hspe/tree/main/lib_hspe. 
+    #     ## at https://github.com/gjhunt/hspe/tree/main/lib_hspe.
     # }
     # library("hspe")
-    
+
     # pseudobulk the sce data by sample + cell type
     sce_pb <- spatialLIBD::registration_pseudobulk(sce,
         var_registration = "cellType_broad_hc",

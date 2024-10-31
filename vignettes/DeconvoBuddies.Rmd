@@ -219,19 +219,25 @@ There are three pallets to choose from to generate colors:
 test_cell_types <- c("cell_A", "cell_B", "cell_C", "cell_D", "cell_E")
 
 ## Preview "classic" colors
-test_cell_colors_classic <- create_cell_colors(cell_types = test_cell_types,
+test_cell_colors_classic <- create_cell_colors(
+    cell_types = test_cell_types,
     pallet = "classic",
-    preview = TRUE)
+    preview = TRUE
+)
 
 ## Preview "gg" colors
-test_cell_colors_gg <- create_cell_colors(cell_types = test_cell_types,
+test_cell_colors_gg <- create_cell_colors(
+    cell_types = test_cell_types,
     pallet = "gg",
-    preview = TRUE)
+    preview = TRUE
+)
 
 ## Preview "tableau" colors
-test_cell_colors_tableau <- create_cell_colors(cell_types = test_cell_types,
+test_cell_colors_tableau <- create_cell_colors(
+    cell_types = test_cell_types,
     pallet = "tableau",
-    preview = TRUE)
+    preview = TRUE
+)
 
 ## Check the color hex codes for "tableau"
 test_cell_colors_tableau

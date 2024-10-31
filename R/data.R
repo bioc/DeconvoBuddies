@@ -17,7 +17,7 @@
 #' summary(rowSums(est_prop) - 1)
 #'
 #' ## You can check this yourself with:
-#' all(round(rowSums(est_prop),3) == 1)
+#' all(round(rowSums(est_prop), 3) == 1)
 #'
 #' @format A `data.frame` object.
 #' @source <https://github.com/LieberInstitute/brainstorm/blob/master/data-raw/est_prop.R>

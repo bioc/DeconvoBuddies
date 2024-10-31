@@ -34,7 +34,7 @@ These are the columns of the \code{data.frame} object:
 summary(rowSums(est_prop) - 1)
 
 ## You can check this yourself with:
-all(round(rowSums(est_prop),3) == 1)
+all(round(rowSums(est_prop), 3) == 1)
 
 }
 \keyword{datasets}

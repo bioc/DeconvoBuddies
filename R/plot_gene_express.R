@@ -36,31 +36,38 @@
 #' if (!exists("sce_DLPFC_example")) sce_DLPFC_example <- fetch_deconvo_data("sce_DLPFC_example")
 #'
 #' ## plot expression of two genes
-#' plot_gene_express(sce = sce_DLPFC_example,
-#'                   category = "cellType_broad_hc",
-#'                   genes = c("GAD2", "CD22"))
+#' plot_gene_express(
+#'     sce = sce_DLPFC_example,
+#'     category = "cellType_broad_hc",
+#'     genes = c("GAD2", "CD22")
+#' )
 #'
 #' ## plot points - note this creates large images and is easy to over plot
-#' plot_gene_express(sce = sce_DLPFC_example, 
-#'                   category = "cellType_broad_hc", 
-#'                   genes = c("GAD2", "CD22"), plot_points = TRUE)
+#' plot_gene_express(
+#'     sce = sce_DLPFC_example,
+#'     category = "cellType_broad_hc",
+#'     genes = c("GAD2", "CD22"), plot_points = TRUE
+#' )
 #'
 #' ## Add title
-#' plot_gene_express(sce = sce_DLPFC_example, 
-#'                   category = "cellType_broad_hc", 
-#'                   genes = c("GAD2", "CD22"), 
-#'                   title = "My Genes")
+#' plot_gene_express(
+#'     sce = sce_DLPFC_example,
+#'     category = "cellType_broad_hc",
+#'     genes = c("GAD2", "CD22"),
+#'     title = "My Genes"
+#' )
 #'
 #' @family expression plotting functions
 #'
-plot_gene_express <- function(sce,
-    genes,
-    assay_name = "logcounts",
-    category = "cellType",
-    color_pal = NULL,
-    title = NULL,
-    plot_points = FALSE,
-    ncol = 2) {
+plot_gene_express <- function(
+        sce,
+        genes,
+        assay_name = "logcounts",
+        category = "cellType",
+        color_pal = NULL,
+        title = NULL,
+        plot_points = FALSE,
+        ncol = 2) {
     stopifnot(any(genes %in% rownames(sce)))
 
     if (!category %in% colnames(colData(sce))) {

@@ -26,7 +26,7 @@
 #' # Load example data
 #' data("rse_bulk_test")
 #' data("est_prop")
-#' 
+#'
 #' # extract relevant colData from the example RangedSummarizedExperiment object
 #' pd <- SummarizedExperiment::colData(rse_bulk_test) |>
 #'     as.data.frame()
@@ -55,14 +55,13 @@
 #'
 #' @importFrom dplyr rename group_by summarise mutate arrange
 #' @importFrom ggplot2 ggplot geom_bar geom_text aes theme element_text
-plot_composition_bar <- function(
-        prop_long,
-        sample_col = "RNum",
-        x_col = "ALL",
-        prop_col = "prop",
-        ct_col = "cell_type",
-        add_text = TRUE,
-        min_prop_text = 0) {
+plot_composition_bar <- function(prop_long,
+    sample_col = "RNum",
+    x_col = "ALL",
+    prop_col = "prop",
+    ct_col = "cell_type",
+    add_text = TRUE,
+    min_prop_text = 0) {
     x_cat <- cell_type <- anno_y <- NULL
 
     # ct_col <- dplyr::enquo(ct_col)
@@ -97,12 +96,11 @@ plot_composition_bar <- function(
 }
 
 
-.get_cat_prop <- function(
-        prop_long,
-        sample_col = "RNum",
-        x_col = "ALL",
-        prop_col = "prop",
-        ct_col = "cell_type") {
+.get_cat_prop <- function(prop_long,
+    sample_col = "RNum",
+    x_col = "ALL",
+    prop_col = "prop",
+    ct_col = "cell_type") {
     cell_type <- prop <- mean_prop <- x_cat <- anno_y <- sum_prop <- n <- NULL
 
     prop_long <- prop_long |>
