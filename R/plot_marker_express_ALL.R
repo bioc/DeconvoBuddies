@@ -16,6 +16,9 @@
 #' #' ## Fetch sce example data
 #' if (!exists("sce_DLPFC_example")) sce_DLPFC_example <- fetch_deconvo_data("sce_DLPFC_example")
 #'
+#' ## load example marker stats
+#' data("marker_test")
+#' 
 #' # Plot marker gene expression to PDF, one page per cell type in stats
 #' pdf_file <- tempfile("test_marker_expression_ALL", fileext = ".pdf")
 #'

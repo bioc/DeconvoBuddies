@@ -1,5 +1,6 @@
 ## code to prepare `est_prop` dataset goes here
 set.seed(567)
+data("rse_bulk_test")
 n_samples <- ncol(rse_bulk_test)
 n_cols <- 5
 cell_types <- paste0("cell_", LETTERS[seq(n_cols)])

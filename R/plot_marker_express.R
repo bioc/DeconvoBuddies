@@ -31,6 +31,9 @@
 #' ## <https://github.com/LieberInstitute/Human_DLPFC_Deconvolution>.
 #' if (!exists("sce_DLPFC_example")) sce_DLPFC_example <- fetch_deconvo_data("sce_DLPFC_example")
 #'
+#' ## load example marker stats
+#' data("marker_test")
+#' 
 #' ## Plot the top markers for Astrocytes
 #' plot_marker_express(
 #'     sce = sce_DLPFC_example,

@@ -23,6 +23,10 @@
 #' @export
 #'
 #' @examples
+#' # Load example data
+#' data("rse_bulk_test")
+#' data("est_prop")
+#' 
 #' # extract relevant colData from the example RangedSummarizedExperiment object
 #' pd <- SummarizedExperiment::colData(rse_bulk_test) |>
 #'     as.data.frame()
