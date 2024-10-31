@@ -14,6 +14,7 @@
 #' @examples
 #' ## R Note that the `rowSums(est_prop)` is equal to 1,
 #' ## with a small error tolerance.
+#' data("est_prop")
 #' summary(rowSums(est_prop) - 1)
 #'
 #' ## You can check this yourself with:
