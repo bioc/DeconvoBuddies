@@ -56,7 +56,7 @@ a \code{scater::plotExpression()} style violin plot for selected marker genes.
 }
 \description{
 This function plots the top n marker genes for a specified cell type based off of
-the \code{stats} table from \code{get_mean_ratio2()}.
+the \code{stats} table from \code{get_mean_ratio()}.
 The gene expression is plotted as violin plot with \code{plot_gene_express} and adds
 annotations to each plot.
 }

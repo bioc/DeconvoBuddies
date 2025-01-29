@@ -1,7 +1,7 @@
 #' Plot gene expression violin plots for top marker genes for one cell type
 #'
 #' This function plots the top n marker genes for a specified cell type based off of
-#' the `stats` table from `get_mean_ratio2()`.
+#' the `stats` table from `get_mean_ratio()`.
 #' The gene expression is plotted as violin plot with `plot_gene_express` and adds
 #' annotations to each plot.
 #'
