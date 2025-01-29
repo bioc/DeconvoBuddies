@@ -91,6 +91,8 @@ create_cell_colors <- function(
   
   ## check number of cell types
   stopifnot(length(cell_types) > 0)
+  stopifnot(is.character(cell_types))
+  
   base_cell_types <- unique(ss(cell_types, pattern = split))
   nct <- length(base_cell_types)
   # if (nct < 3) stop("Need 3 or more base cell types")
@@ -101,6 +103,7 @@ create_cell_colors <- function(
     stop("must select a pallet_name or provide custom pallet")
     
   } else if(!is.null(pallet)){ ## use custom pallet
+    stopifnot(is.character(pallet))
     cell_colors = pallet
     message(sprintf("Creating custom pallet for %d cell types", nct))
     
