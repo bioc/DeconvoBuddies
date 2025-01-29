@@ -120,18 +120,21 @@ create_cell_colors <- function(
                       "#247FBC",
                       "#E83E38",
                       "#4E586A")
-      if(length(cell_colors) < nct){
-        warning(sprintf("more cell types (%d) than classic colors (%d)", nct, length(cell_colors)))
-      } else {
-        cell_colors <- cell_colors[seq(nct)]
-      }
     }
-    
-    
   }
   
+  #### match cell types and colors ####
+  if(length(cell_colors) < nct){ ## error if not enough colors
+    stop(sprintf("more cell types (%d) than colors in pallet (%d)", nct, length(cell_colors)))
+    
+  } else if(length(cell_colors) > nct) { ## subset large pallet
+    # message(sprintf("more colors (%d) than cell types (%d), using first (%d) colors", length(cell_colors), nct, nct))
+    cell_colors <- cell_colors[seq(nct)]
+  }
+  ## assign cell types to colors
   names(cell_colors) <- base_cell_types
   
+  ## handle cell subtype gradient
   if (!identical(base_cell_types, cell_types)) {
     split_cell_types <- cell_types[!cell_types %in% base_cell_types]
     base_split <- rafalib::splitit(ss(split_cell_types, split))
@@ -148,6 +151,7 @@ create_cell_colors <- function(
     cell_colors <- c(cell_colors, split_scale_colors)
   }
   
+  ## plot preview
   if (preview) {
     par(las = 2) # make label text perpendicular to axis
     par(mar = c(5, 8, 4, 2)) # increase y-axis margin.
