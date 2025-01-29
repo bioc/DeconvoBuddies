@@ -73,90 +73,100 @@
 #' @importFrom graphics barplot par
 #' @importFrom grDevices hcl
 #' @importFrom utils head
-create_cell_colors <- function(cell_types = c("Astro", "Micro", "Endo", "Oligo", "OPC", "Excit", "Inhib", "Other"),
-    pallet_name = c("classic", "gg", "tableau"),
+create_cell_colors <- function(
+    cell_types = c("Astro", 
+                   "Micro", 
+                   "Endo", 
+                   "Oligo", 
+                   "OPC", 
+                   "Excit", 
+                   "Inhib", 
+                   "Other"),
+    pallet_name = c("classic",
+                    "gg", 
+                    "tableau"),
     pallet = NULL,
     split = NA,
     preview = FALSE) {
   
-    ## check number of cell types
+  ## check number of cell types
   base_cell_types <- unique(ss(cell_types, pattern = split))
   nct <- length(base_cell_types)
   # if (nct < 3) stop("Need 3 or more base cell types")
   cell_colors <- list()
   
-    ## check pallet selection
-    if(is.null(pallet_name) & is.null(pallet)){
-      stop("must select a pallet_name or provide custom pallet")
-      
-    } else if(!is.null(pallet)){ ## use custom pallet
-      cell_colors = pallet
-      message(sprintf("Creating custom pallet for %d cell types", nct))
-      
-    } else { ## use user provided pallet
-      pallet_name <- match.arg(pallet_name)
-      message(sprintf("Creating %s pallet for %d cell types", pallet_name, nct))
-      
-      if (pallet_name == "gg") {
-        cell_colors <- gg_color_hue(nct)
-      } else if (pallet_name == "tableau") {
-        cell_colors <- tableau20[seq(nct)]
-      } else if (pallet_name == "classic"){
-        cell_colors = c("#3BB273",
-                        "#FF56AF",
-                        "#663894",
-                        "#F57A00",
-                        "#D2B037",
-                        "#247FBC",
-                        "#E83E38",
-                        "#4E586A")
-        if(length(cell_colors) < nct){
-          warning(sprintf("more cell types (%d) than classic colors (%d)", nct, length(cell_colors)))
-        } else {
-          cell_colors <- cell_colors[seq(nct)]
-        }
+  ## check pallet selection
+  if(is.null(pallet_name) & is.null(pallet)){
+    stop("must select a pallet_name or provide custom pallet")
+    
+  } else if(!is.null(pallet)){ ## use custom pallet
+    cell_colors = pallet
+    message(sprintf("Creating custom pallet for %d cell types", nct))
+    
+  } else { ## use user provided pallet
+    pallet_name <- match.arg(pallet_name)
+    message(sprintf("Creating %s pallet for %d cell types", pallet_name, nct))
+    
+    if (pallet_name == "gg") {
+      cell_colors <- gg_color_hue(nct)
+    } else if (pallet_name == "tableau") {
+      cell_colors <- tableau20[seq(nct)]
+    } else if (pallet_name == "classic"){
+      cell_colors = c("#3BB273",
+                      "#FF56AF",
+                      "#663894",
+                      "#F57A00",
+                      "#D2B037",
+                      "#247FBC",
+                      "#E83E38",
+                      "#4E586A")
+      if(length(cell_colors) < nct){
+        warning(sprintf("more cell types (%d) than classic colors (%d)", nct, length(cell_colors)))
+      } else {
+        cell_colors <- cell_colors[seq(nct)]
       }
-      
-      
     }
-
-    names(cell_colors) <- base_cell_types
-
-    if (!identical(base_cell_types, cell_types)) {
-        split_cell_types <- cell_types[!cell_types %in% base_cell_types]
-        base_split <- rafalib::splitit(ss(split_cell_types, split))
-        
-        split_scale_colors <- purrr::map2(
-            names(base_split), base_split,
-            ~ .scale_cell_colors(
-                cell_colors[[.x]],
-                split_cell_types[.y]
-            )
-        )
-        message(sprintf("Creating subtype gradients for %d base cell types", length(split_scale_colors)))
-        split_scale_colors <- unlist(split_scale_colors)
-        cell_colors <- c(cell_colors, split_scale_colors)
-    }
-
-    if (preview) {
-        par(las = 2) # make label text perpendicular to axis
-        par(mar = c(5, 8, 4, 2)) # increase y-axis margin.
-        barplot(rep(1, length(cell_colors)),
+    
+    
+  }
+  
+  names(cell_colors) <- base_cell_types
+  
+  if (!identical(base_cell_types, cell_types)) {
+    split_cell_types <- cell_types[!cell_types %in% base_cell_types]
+    base_split <- rafalib::splitit(ss(split_cell_types, split))
+    
+    split_scale_colors <- purrr::map2(
+      names(base_split), base_split,
+      ~ .scale_cell_colors(
+        cell_colors[[.x]],
+        split_cell_types[.y]
+      )
+    )
+    message(sprintf("Creating subtype gradients for %d base cell types", length(split_scale_colors)))
+    split_scale_colors <- unlist(split_scale_colors)
+    cell_colors <- c(cell_colors, split_scale_colors)
+  }
+  
+  if (preview) {
+    par(las = 2) # make label text perpendicular to axis
+    par(mar = c(5, 8, 4, 2)) # increase y-axis margin.
+    barplot(rep(1, length(cell_colors)),
             col = cell_colors,
             horiz = TRUE,
             axes = FALSE,
             names.arg = names(cell_colors)
-        )
-    }
-
-    return(cell_colors)
+    )
+  }
+  
+  return(cell_colors)
 }
 
 .scale_cell_colors <- function(color, cell_types) {
-    n_ct <- length(cell_types)
-    scale_colors <- grDevices::colorRampPalette(c(color, "white"))(n_ct + 1)
-    scale_colors <- utils::head(scale_colors, n_ct)
-    names(scale_colors) <- cell_types
-
-    return(scale_colors)
+  n_ct <- length(cell_types)
+  scale_colors <- grDevices::colorRampPalette(c(color, "white"))(n_ct + 1)
+  scale_colors <- utils::head(scale_colors, n_ct)
+  names(scale_colors) <- cell_types
+  
+  return(scale_colors)
 }
