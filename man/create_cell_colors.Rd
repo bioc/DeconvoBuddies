@@ -5,8 +5,9 @@
 \title{Create a cell color pallet for plots}
 \usage{
 create_cell_colors(
-  cell_types = c("Astro", "Micro", "Oligo", "OPC", "Inhib", "Excit"),
-  pallet = c("classic", "gg", "tableau"),
+  cell_types = c("Astro", "Micro", "Endo", "Oligo", "OPC", "Excit", "Inhib", "Other"),
+  pallet_name = c("classic", "gg", "tableau"),
+  pallet = NULL,
   split = NA,
   preview = FALSE
 )
@@ -14,7 +15,17 @@ create_cell_colors(
 \arguments{
 \item{cell_types}{A \code{character()} vector listing unique cell types.}
 
-\item{pallet}{Choice of base pallet \code{"classic"}, \code{"gg"}, or \code{"tableau"}.}
+\item{pallet_name}{A \code{character(1)} indicating choice of included pallets:
+\itemize{
+\item \code{"classic"}: classic set of 8 cell type colors from LIBD, checked for
+visability and color blind accessibility. Default pallet.
+\item \code{"gg"} : mimic colors automatically picked by ggplot.
+\item \code{"tableau"} : 20 distinct colors from tableau color pallet, good for
+large number of cell type.
+}}
+
+\item{pallet}{A \code{character()} vector listing user provided color pallet. If
+provided, overrides pallet selection with pallet_name.}
 
 \item{split}{delineating \code{character(1)} after which suffixes will be ignored.
 This is useful for cases when say \code{A.1} and \code{A.2} are both to be considered
@@ -33,22 +44,45 @@ input \code{character()} of unique cell types. These were colors that have been
 useful in our experience.
 }
 \examples{
-create_cell_colors(pallet = "classic")
-create_cell_colors(pallet = "classic", preview = TRUE)
-create_cell_colors(pallet = "tableau", preview = TRUE)
+## create cell colors with included pallets
+create_cell_colors(pallet_name = "classic")
+create_cell_colors(pallet_name = "classic", preview = TRUE)
+create_cell_colors(pallet_name = "tableau", preview = TRUE)
 
-## Consider A.1 and A.2 as two different cell types (default)
+## use custom colors
+my_colors <- c("darkorchid4", "deeppink4", "aquamarine3", "darkolivegreen1")
+create_cell_colors(cell_type = c("A", "B", "C", "D"), 
+                   pallet = my_colors, 
+                   preview = TRUE)
+                   
+## use Rcolor brewer
+create_cell_colors(cell_type = c("A", "B", "C"), 
+                   pallet = RColorBrewer::brewer.pal(n = 3, name = "Set1"),
+                   previe = TRUE)
+
+## Options for subtype handling
+## Provide unique colors for cell subtypes (DEFAULT)
 create_cell_colors(
     cell_types = c("A.1", "A.2", "B.1", "C", "D"),
-    pallet = "gg",
+    pallet_name = "classic",
     preview = TRUE
 )
 
-## Consider A.1 and A.2 as cell type A by using the "split" argument
+## Provide gradient colors for A.1 and A.2 by using the "split" argument
+## returns a base cell type color & subtype colors
 create_cell_colors(
-    cell_types = c("A.1", "A.2", "B.1", "C"),
+    cell_types = c("A.1", "A.2", "B.1", "C", "D"),
     split = "\\\\.",
-    pallet = "gg",
+    pallet_name = "classic",
     preview = TRUE
 )
+
+## try with custom colors
+create_cell_colors(
+    cell_types = c("A.1", "A.2", "B.1", "C", "D"),
+    split = "\\\\.",
+    pallet = my_colors,
+    preview = TRUE
+)
+
 }

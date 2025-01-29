@@ -5,7 +5,16 @@
 #' useful in our experience.
 #'
 #' @param cell_types A `character()` vector listing unique cell types.
-#' @param pallet Choice of base pallet `"classic"`, `"gg"`, or `"tableau"`.
+#' @param pallet_name A `character(1)` indicating choice of included pallets:
+#' 
+#' * `"classic"`: classic set of 8 cell type colors from LIBD, checked for 
+#' visability and color blind accessibility. Default pallet. 
+#' * `"gg"` : mimic colors automatically picked by ggplot. 
+#' * `"tableau"` : 20 distinct colors from tableau color pallet, good for 
+#' large number of cell type. 
+#' 
+#' @param pallet A `character()` vector listing user provided color pallet. If 
+#' provided, overrides pallet selection with pallet_name.
 #' @param split delineating `character(1)` after which suffixes will be ignored.
 #' This is useful for cases when say `A.1` and `A.2` are both to be considered
 #' as cell type `A` (here `split = "\\."`).
@@ -17,50 +26,98 @@
 #' @export
 #'
 #' @examples
-#' create_cell_colors(pallet = "classic")
-#' create_cell_colors(pallet = "classic", preview = TRUE)
-#' create_cell_colors(pallet = "tableau", preview = TRUE)
-#'
-#' ## Consider A.1 and A.2 as two different cell types (default)
+#' ## create cell colors with included pallets
+#' create_cell_colors(pallet_name = "classic")
+#' create_cell_colors(pallet_name = "classic", preview = TRUE)
+#' create_cell_colors(pallet_name = "tableau", preview = TRUE)
+#' 
+#' ## use custom colors
+#' my_colors <- c("darkorchid4", "deeppink4", "aquamarine3", "darkolivegreen1")
+#' create_cell_colors(cell_type = c("A", "B", "C", "D"), 
+#'                    pallet = my_colors, 
+#'                    preview = TRUE)
+#'                    
+#' ## use Rcolor brewer
+#' create_cell_colors(cell_type = c("A", "B", "C"), 
+#'                    pallet = RColorBrewer::brewer.pal(n = 3, name = "Set1"),
+#'                    previe = TRUE)
+#' 
+#' ## Options for subtype handling
+#' ## Provide unique colors for cell subtypes (DEFAULT)
 #' create_cell_colors(
 #'     cell_types = c("A.1", "A.2", "B.1", "C", "D"),
-#'     pallet = "gg",
+#'     pallet_name = "classic",
 #'     preview = TRUE
 #' )
 #'
-#' ## Consider A.1 and A.2 as cell type A by using the "split" argument
+#' ## Provide gradient colors for A.1 and A.2 by using the "split" argument
+#' ## returns a base cell type color & subtype colors
 #' create_cell_colors(
-#'     cell_types = c("A.1", "A.2", "B.1", "C"),
+#'     cell_types = c("A.1", "A.2", "B.1", "C", "D"),
 #'     split = "\\.",
-#'     pallet = "gg",
+#'     pallet_name = "classic",
 #'     preview = TRUE
 #' )
-#' @importFrom RColorBrewer brewer.pal
+#' 
+#' ## try with custom colors
+#' create_cell_colors(
+#'     cell_types = c("A.1", "A.2", "B.1", "C", "D"),
+#'     split = "\\.",
+#'     pallet = my_colors,
+#'     preview = TRUE
+#' )
+#' 
 #' @importFrom grDevices colorRampPalette
 #' @importFrom rafalib splitit
 #' @importFrom purrr map2
 #' @importFrom graphics barplot par
 #' @importFrom grDevices hcl
 #' @importFrom utils head
-create_cell_colors <- function(cell_types = c("Astro", "Micro", "Oligo", "OPC", "Inhib", "Excit"),
-    pallet = c("classic", "gg", "tableau"),
+create_cell_colors <- function(cell_types = c("Astro", "Micro", "Endo", "Oligo", "OPC", "Excit", "Inhib", "Other"),
+    pallet_name = c("classic", "gg", "tableau"),
+    pallet = NULL,
     split = NA,
     preview = FALSE) {
-    pallet <- match.arg(pallet)
-
-    base_cell_types <- unique(ss(cell_types, pattern = split))
-    nct <- length(base_cell_types)
-    if (nct < 3) stop("Need 3 or more base cell types")
-
-    cell_colors <- list()
-
-    if (pallet == "classic") {
-        cell_colors <- RColorBrewer::brewer.pal(n = nct, name = "Set1")
-        cell_colors <- c(seq(3, nct), cell_colors[c(1, 2)])
-    } else if (pallet == "gg") {
+  
+    ## check number of cell types
+  base_cell_types <- unique(ss(cell_types, pattern = split))
+  nct <- length(base_cell_types)
+  # if (nct < 3) stop("Need 3 or more base cell types")
+  cell_colors <- list()
+  
+    ## check pallet selection
+    if(is.null(pallet_name) & is.null(pallet)){
+      stop("must select a pallet_name or provide custom pallet")
+      
+    } else if(!is.null(pallet)){ ## use custom pallet
+      cell_colors = pallet
+      message(sprintf("Creating custom pallet for %d cell types", nct))
+      
+    } else { ## use user provided pallet
+      pallet_name <- match.arg(pallet_name)
+      message(sprintf("Creating %s pallet for %d cell types", pallet_name, nct))
+      
+      if (pallet_name == "gg") {
         cell_colors <- gg_color_hue(nct)
-    } else if (pallet == "tableau") {
+      } else if (pallet_name == "tableau") {
         cell_colors <- tableau20[seq(nct)]
+      } else if (pallet_name == "classic"){
+        cell_colors = c("#3BB273",
+                        "#FF56AF",
+                        "#663894",
+                        "#F57A00",
+                        "#D2B037",
+                        "#247FBC",
+                        "#E83E38",
+                        "#4E586A")
+        if(length(cell_colors) < nct){
+          warning(sprintf("more cell types (%d) than classic colors (%d)", nct, length(cell_colors)))
+        } else {
+          cell_colors <- cell_colors[seq(nct)]
+        }
+      }
+      
+      
     }
 
     names(cell_colors) <- base_cell_types
@@ -68,7 +125,7 @@ create_cell_colors <- function(cell_types = c("Astro", "Micro", "Oligo", "OPC", 
     if (!identical(base_cell_types, cell_types)) {
         split_cell_types <- cell_types[!cell_types %in% base_cell_types]
         base_split <- rafalib::splitit(ss(split_cell_types, split))
-
+        
         split_scale_colors <- purrr::map2(
             names(base_split), base_split,
             ~ .scale_cell_colors(
@@ -76,7 +133,7 @@ create_cell_colors <- function(cell_types = c("Astro", "Micro", "Oligo", "OPC", 
                 split_cell_types[.y]
             )
         )
-
+        message(sprintf("Creating subtype gradients for %d base cell types", length(split_scale_colors)))
         split_scale_colors <- unlist(split_scale_colors)
         cell_colors <- c(cell_colors, split_scale_colors)
     }
